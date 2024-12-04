@@ -23,7 +23,7 @@ require_once '../src/db_init.php';
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Products</a></li>
+                        <li class="nav-item"><a class="nav-link" href="products.php">Products</a></li>
                         <li class="nav-item"><a class="nav-link" href="#">Orders</a></li>
                         <li class="nav-item"><a class="nav-link" href="#">Cart</a></li>
                         <li class="nav-item"><a class="nav-link" href="#">Login</a></li>
