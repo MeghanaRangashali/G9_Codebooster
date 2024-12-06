@@ -2,6 +2,7 @@
 require_once '../src/db_init.php';
 require_once '../src/classes/DB.php';
 require_once '../src/classes/Product.php';
+require_once '../src/classes/AuthHandler.php';
 
 $signup_message = isset($_SESSION['signup_message']) ? $_SESSION['signup_message'] : null;
 $login_message = isset($_SESSION['login_message']) ? $_SESSION['login_message'] : null;
@@ -89,6 +90,7 @@ if (!$product) {
                 </form>
             </div>
         </div>
+        <?php include 'login_signup_modal.php';?>
     </div>
 
 

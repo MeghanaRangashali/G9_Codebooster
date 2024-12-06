@@ -2,6 +2,7 @@
 require_once '../src/db_init.php';
 require_once '../src/classes/DB.php';
 require_once '../src/classes/Product.php';
+require_once '../src/classes/AuthHandler.php';
 
 $signup_message = isset($_SESSION['signup_message']) ? $_SESSION['signup_message'] : null;
 $login_message = isset($_SESSION['login_message']) ? $_SESSION['login_message'] : null;
@@ -76,7 +77,7 @@ foreach ($cart as $item) {
                         <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="products.php">Products</a></li>
                         <li class="nav-item"><a class="nav-link" href="#">Orders</a></li>
-                        <li class="nav-item"><a class="nav-link" href="cart.php">Cart</a></li>
+                        <li class="nav-item"><a class="nav-link" href="Cart.php">Cart</a></li>
                         <?php if ($logged_in_user): ?>
                             <li class="nav-item">
                                 <span class="nav-link">Welcome, <?= htmlspecialchars($logged_in_user) ?></span>
@@ -139,6 +140,7 @@ foreach ($cart as $item) {
         <?php else: ?>
             <p>Your cart is empty.</p>
         <?php endif; ?>
+        <?php include 'login_signup_modal.php';?>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
