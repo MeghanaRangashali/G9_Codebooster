@@ -101,7 +101,9 @@ $products = $selectedCategory ? $productHandler->getProductsByCategory($selected
                 <p class="text-center">No products found in this category.</p>
             <?php endif; ?>
         </div>
+        <?php include 'login_signup_modal.php';?>
     </main>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
