@@ -30,4 +30,12 @@ class Product
         $this->db->query($sql);
         return array_column($this->db->resultSet(), 'category');
     }
+
+    public function getProductById($productId)
+    {
+        $sql = "SELECT * FROM products WHERE product_id = :product_id";
+        $this->db->query($sql);
+        $this->db->bind(':product_id', $productId);
+        return $this->db->single();
+    }
 }
