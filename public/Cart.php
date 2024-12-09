@@ -104,6 +104,19 @@ foreach ($cart as $item) {
         <?php endif; ?>
     </div>
 
+    <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="checkoutModalLabel">Login Required</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    You need to log in to proceed to the checkout. Please log in or create an account to continue.
+                </div>
+            </div>
+        </div>
+    </div>
     <?php include 'login_signup_modal.php'; ?>
     <?php include 'footer.php'; ?>
 
