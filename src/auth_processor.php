@@ -3,6 +3,7 @@ require_once 'db_init.php';
 require_once './classes/db.php';
 require_once './classes/AuthHandler.php';
 
+// Initialize Database
 $db = new Database();
 $authHandler = new AuthHandler($db);
 
@@ -18,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             phone: $_POST['phone'],
             address: $_POST['address']
         );
+        $_SESSION['signup_message'] = $result['message'];
         header("Location: ../public/index.php");
         exit;
     }
@@ -27,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_POST['email'],
             $_POST['password']
         );
+        $_SESSION['login_message'] = $result['message'];
         if ($result['success']) {
             header("Location: ../public/index.php");
         } else {

@@ -72,11 +72,9 @@ class AuthHandler
 
     public function login($email, $password)
     {
-        // Sanitize inputs
         $email = $this->sanitizeInput($email);
         $password = trim($password);
 
-        // Validate inputs
         if (empty($email) || empty($password)) {
             return ['success' => false, 'message' => 'Email and password are required.'];
         }
@@ -84,7 +82,6 @@ class AuthHandler
             return ['success' => false, 'message' => 'Invalid email format.'];
         }
 
-        // Query the database for user credentials
         $sql = "SELECT customer_id, first_name, password FROM customers WHERE email = :email";
         $this->db->query($sql);
         $this->db->bind(':email', $email);
@@ -94,6 +91,7 @@ class AuthHandler
             $user = $result[0];
             if (password_verify($password, $user['password'])) {
                 session_start();
+                $_SESSION['customer_id'] = $user['customer_id'];
                 $_SESSION['first_name'] = $user['first_name'];
                 $_SESSION['email'] = $email;
                 return ['success' => true, 'message' => 'Login successful!'];
