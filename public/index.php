@@ -3,7 +3,28 @@ require_once '../src/db_init.php';
 require_once '../src/classes/DB.php';
 require_once '../src/classes/AuthHandler.php';
 
+function fetchPexelsImage($query)
+{
+    $apiKey = 'RH812gfiKdtH2p6Ii9IkGcQuUeYdS9OaHyUmmkET0NxxbPKOXYw6eqje';
+    $url = "https://api.pexels.com/v1/search?query=" . urlencode($query) . "&per_page=1";
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        "Authorization: $apiKey"
+    ]);
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    $data = json_decode($response, true);
+    return $data['photos'][0]['src']['large'] ?? null;
+}
+
+$toasterImage = fetchPexelsImage('toaster');
+$grillerImage = fetchPexelsImage('griller');
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,7 +42,7 @@ require_once '../src/classes/AuthHandler.php';
     <section class="hero">
         <div class="hero-content text-center text-light py-5">
             <h1>Codebooster: Toasters & Grillers</h1>
-            <p>Your one-stop shop for high-quality toasters and Grillers. Perfect for your kitchen and outdoor adventures.</p>
+            <p>Your one-stop shop for high-quality toasters and grillers. Perfect for your kitchen and outdoor adventures.</p>
             <a href="products.php" class="btn btn-light btn-lg mt-3">Shop Now</a>
         </div>
     </section>
@@ -82,18 +103,13 @@ require_once '../src/classes/AuthHandler.php';
             <div class="col-md-4">
                 <blockquote class="blockquote">
                     <p>"Amazing quality and quick delivery. Highly recommended!"</p>
-                    <footer class="blockquote-footer">
-                        Divyang Nakrani
-                    </footer>
+                    <footer class="blockquote-footer">Divyang Nakrani</footer>
                 </blockquote>
             </div>
-
             <div class="col-md-4">
                 <blockquote class="blockquote">
                     <p>"Amazing quality and quick delivery. Highly recommended!"</p>
-                    <footer class="blockquote-footer">
-                        Akshay Mangukiya
-                    </footer>
+                    <footer class="blockquote-footer">Akshay Mangukiya</footer>
                 </blockquote>
             </div>
         </div>
@@ -104,7 +120,7 @@ require_once '../src/classes/AuthHandler.php';
         <div class="row">
             <div class="col-md-3">
                 <div class="card">
-                    <img src="./assests/images/compact-toaster.jpeg" class="card-img-top" alt="Product 1">
+                    <img src="<?= $toasterImage ?>" class="card-img-top" alt="Compact Toaster">
                     <div class="card-body">
                         <h5 class="card-title">Compact Toaster</h5>
                         <p class="card-text">$29.99</p>
@@ -114,7 +130,7 @@ require_once '../src/classes/AuthHandler.php';
             </div>
             <div class="col-md-3">
                 <div class="card">
-                    <img src="./assests/images/portable_griller.jpeg" class="card-img-top" alt="Product 2">
+                    <img src="<?= $grillerImage ?>" class="card-img-top" alt="Portable Griller">
                     <div class="card-body">
                         <h5 class="card-title">Portable Griller</h5>
                         <p class="card-text">$69.99</p>
@@ -127,7 +143,6 @@ require_once '../src/classes/AuthHandler.php';
 
     <?php include 'login_signup_modal.php'; ?>
     <?php include 'footer.php'; ?>
-
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
