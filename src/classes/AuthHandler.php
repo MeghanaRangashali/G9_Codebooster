@@ -25,37 +25,21 @@ class AuthHandler
         return preg_match('/^[0-9]{10,15}$/', $phone);
     }
 
-    public function signup($firstName, $lastName, $email, $password, $phone, $address)
+    public function signup($firstName, $lastName, $email, $password, $phone = null, $address = null)
     {
-        // Sanitize inputs
-        $firstName = $this->sanitizeInput($firstName);
-        $lastName = $this->sanitizeInput($lastName);
-        $email = $this->sanitizeInput($email);
-        $phone = $this->sanitizeInput($phone);
-        $address = $this->sanitizeInput($address);
-        $password = trim($password);
+        $this->db->query("SELECT email FROM customers WHERE email = :email");
+        $this->db->bind(':email', $email);
+        $existingUser = $this->db->single();
 
-        // Validate inputs
-        if (empty($firstName) || empty($lastName) || empty($email) || empty($password) || empty($phone) || empty($address)) {
-            return ['success' => false, 'message' => 'All fields are required.'];
-        }
-        if (!$this->validateEmail($email)) {
-            return ['success' => false, 'message' => 'Invalid email format.'];
-        }
-        if (!$this->validatePhone($phone)) {
-            return ['success' => false, 'message' => 'Invalid phone number. It must be 10-15 digits.'];
-        }
-        if (strlen($password) < 8) {
-            return ['success' => false, 'message' => 'Password must be at least 8 characters long.'];
+        if ($existingUser) {
+            return [
+                'success' => false,
+                'message' => 'A user with this email already exists. Please try another email id.'
+            ];
         }
 
-        // Hash the password
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-
-        // Insert into the database
-        $sql = "INSERT INTO customers (first_name, last_name, email, password, phone, address) 
-                VALUES (:first_name, :last_name, :email, :password, :phone, :address)";
-        $this->db->query($sql);
+        $this->db->query("INSERT INTO customers (first_name, last_name, email, password, phone, address) VALUES (:first_name, :last_name, :email, :password, :phone, :address)");
         $this->db->bind(':first_name', $firstName);
         $this->db->bind(':last_name', $lastName);
         $this->db->bind(':email', $email);
@@ -64,9 +48,15 @@ class AuthHandler
         $this->db->bind(':address', $address);
 
         if ($this->db->execute()) {
-            return ['success' => true, 'message' => 'Signup successful! Please login.'];
+            return [
+                'success' => true,
+                'message' => 'Signup successful! You can now log in.'
+            ];
         } else {
-            return ['success' => false, 'message' => 'Signup failed. Email may already be in use.'];
+            return [
+                'success' => false,
+                'message' => 'An error occurred while creating your account. Please try again.'
+            ];
         }
     }
 
